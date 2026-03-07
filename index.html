@@ -146,9 +146,14 @@
   .hero-scroll:hover .scroll-arrow svg { stroke: var(--gold-light); }
   .hero-scroll span { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); pointer-events: none; }
   .scroll-arrow { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-  .scroll-arrow svg { animation: arrowBounce 1.8s ease-in-out infinite; }
-  .scroll-arrow svg:nth-child(2) { animation-delay: 0.2s; opacity: 0.55; }
-  .scroll-arrow svg:nth-child(3) { animation-delay: 0.4s; opacity: 0.25; }
+  .scroll-arrow svg:nth-child(2) { opacity: 0.55; }
+  .scroll-arrow svg:nth-child(3) { opacity: 0.25; }
+  /* Only animate arrows on desktop */
+  @media (hover: hover) {
+    .scroll-arrow svg { animation: arrowBounce 1.8s ease-in-out infinite; }
+    .scroll-arrow svg:nth-child(2) { animation-delay: 0.2s; }
+    .scroll-arrow svg:nth-child(3) { animation-delay: 0.4s; }
+  }
 
   /* --- tablet hero (600–859px): slightly larger, still stacked --- */
   @media (min-width: 600px) and (max-width: 859px) {
@@ -308,7 +313,7 @@
     width: 100%;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
-  .map-card:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(44,36,32,0.1); }
+  @media (hover: hover) { .map-card:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(44,36,32,0.1); } }
 
   .map-card-visual {
     height: 110px; width: 100%;
@@ -455,9 +460,11 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
   }
-  .explore-card-link:hover .explore-card,
-  .explore-card-link:focus-visible .explore-card {
-    transform: translateY(-3px); box-shadow: 0 10px 32px rgba(44,36,32,0.08);
+  @media (hover: hover) {
+    .explore-card-link:hover .explore-card,
+    .explore-card-link:focus-visible .explore-card {
+      transform: translateY(-3px); box-shadow: 0 10px 32px rgba(44,36,32,0.08);
+    }
   }
 
   /* mobile: stacked */
@@ -629,42 +636,47 @@
     padding: 17px 48px;
     border-radius: 60px;
     text-decoration: none;
-    transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+    transition: background 0.2s;
     box-shadow: 0 6px 28px rgba(184,149,106,0.45);
     border: none; cursor: pointer;
     position: relative;
     z-index: 1;
   }
-  /* pulsing ring behind button */
+  /* Static ring — no animation on mobile to avoid repaint cost */
   .rsvp-btn::before {
     content: '';
     position: absolute;
-    inset: -6px;
+    inset: -5px;
     border-radius: 60px;
-    border: 1.5px solid rgba(184,149,106,0.4);
-    animation: rsvpPulse 2.4s ease-out infinite;
+    border: 1.5px solid rgba(184,149,106,0.3);
+    pointer-events: none;
   }
-  .rsvp-btn::after {
-    content: '';
-    position: absolute;
-    inset: -12px;
-    border-radius: 60px;
-    border: 1px solid rgba(184,149,106,0.2);
-    animation: rsvpPulse 2.4s ease-out 0.4s infinite;
+  .rsvp-btn::after { display: none; }
+  .rsvp-btn:active { transform: scale(0.97); }
+  /* Only enable pulse animation on desktop (hover-capable devices) */
+  @media (hover: hover) {
+    .rsvp-btn::before { animation: rsvpPulse 2.4s ease-out infinite; }
+    .rsvp-btn::after {
+      content: ''; display: block;
+      position: absolute; inset: -12px;
+      border-radius: 60px;
+      border: 1px solid rgba(184,149,106,0.2);
+      animation: rsvpPulse 2.4s ease-out 0.4s infinite;
+      pointer-events: none;
+    }
+    @keyframes rsvpPulse {
+      0%   { opacity: 1; transform: scale(1); }
+      70%  { opacity: 0; transform: scale(1.08); }
+      100% { opacity: 0; transform: scale(1.08); }
+    }
+    .rsvp-btn:hover {
+      background: #a07d56;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 36px rgba(184,149,106,0.5);
+    }
+    .rsvp-btn:hover::before,
+    .rsvp-btn:hover::after { animation: none; opacity: 0; }
   }
-  @keyframes rsvpPulse {
-    0%   { opacity: 1;   transform: scale(1); }
-    70%  { opacity: 0;   transform: scale(1.08); }
-    100% { opacity: 0;   transform: scale(1.08); }
-  }
-  .rsvp-btn:hover {
-    background: #a07d56;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 36px rgba(184,149,106,0.5);
-  }
-  .rsvp-btn:hover::before,
-  .rsvp-btn:hover::after { animation: none; opacity: 0; }
-  .rsvp-btn:active { transform: translateY(0); }
 
   @media (min-width: 860px) {
     .hero-countdown { margin-top: 32px; gap: 8px; }
@@ -743,22 +755,20 @@
     font-family: 'DM Sans', sans-serif;
     font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500;
     text-decoration: none;
-    transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1),
-                box-shadow 0.25s ease,
-                opacity 0.3s ease,
-                background 0.2s;
+    transition: opacity 0.3s ease, background 0.2s;
     /* hidden by default, shown after scroll */
     opacity: 0; pointer-events: none;
-    transform: translateY(16px);
+    transform: none;
   }
   .rsvp-fab.visible {
     opacity: 1; pointer-events: all;
-    transform: translateY(0);
   }
-  .rsvp-fab:hover {
-    background: #a07d56;
-    transform: translateY(-3px);
-    box-shadow: 0 10px 36px rgba(184,149,106,0.5);
+  @media (hover: hover) {
+    .rsvp-fab:hover {
+      background: #a07d56;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 36px rgba(184,149,106,0.5);
+    }
   }
   .rsvp-fab svg { flex-shrink: 0; }
 
@@ -773,7 +783,7 @@
     nav { gap: 8px; padding: 10px 12px; }
     nav a { font-size: 10px; letter-spacing: 0.1em; }
     .hero { padding: 60px 16px 40px; }
-    .hero-photo { width: 76vw; }
+    .hero-photo { width: 84vw; }
     .hero-names h1 { font-size: 42px; }
     .hero-ornament { font-size: 10px; }
     section { padding: 44px 16px; }
