@@ -197,7 +197,7 @@
      tablet  : 72px 40px
      desktop : 88px 56px
   =========================================== */
-  section { padding: 56px 20px; }
+  section { padding: 56px 20px; touch-action: pan-y; }
   .section-inner { max-width: 680px; margin: 0 auto; width: 100%; }
 
   @media (min-width: 600px) {
@@ -1342,6 +1342,27 @@
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeRsvp();
   });
+
+  /* ---- WebView scroll fix: passive touch listeners ----
+     In-app browsers (Telegram, Instagram, WhatsApp) block the first
+     touch if any element has a non-passive touchstart listener.
+     Registering passive listeners on document + body tells the browser
+     it can scroll immediately without waiting for JS to finish. ---- */
+  document.addEventListener('touchstart', function(){}, { passive: true });
+  document.addEventListener('touchmove',  function(){}, { passive: true });
+  document.body.addEventListener('touchstart', function(){}, { passive: true });
+  document.body.addEventListener('touchmove',  function(){}, { passive: true });
+
+  /* Force a layout tick on first touch to wake up WebView scroll engine */
+  var _scrollUnlocked = false;
+  document.addEventListener('touchstart', function() {
+    if (_scrollUnlocked) return;
+    _scrollUnlocked = true;
+    var s = document.body.style;
+    s.webkitOverflowScrolling = 'touch';
+    /* nudge scroll position by 0px to kick WebView into scroll mode */
+    window.scrollTo(window.scrollX, window.scrollY + 0);
+  }, { passive: true, once: false });
 </script>
 
 </body>
