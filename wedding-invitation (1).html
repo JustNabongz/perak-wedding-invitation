@@ -112,12 +112,12 @@
     font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase;
     color: var(--gold); font-weight: 400; margin-bottom: 20px;
     opacity: 0; animation: fadeUp 0.9s 0.2s forwards;
-    padding: 0 4px;
+    padding: 0 4px; text-align: center;
   }
   .hero-names { opacity: 0; animation: fadeUp 1s 0.55s forwards; }
   .hero-names h1 {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(46px, 13vw, 64px);
+    font-size: clamp(36px, 9vw, 52px);
     font-weight: 300; line-height: 1.0; color: var(--ink);
   }
   .hero-ampersand {
@@ -137,8 +137,11 @@
   .hero-scroll {
     margin-top: 36px; display: flex; flex-direction: column; align-items: center; gap: 8px;
     opacity: 0; animation: fadeUp 0.8s 1.1s forwards;
+    cursor: pointer; background: none; border: none; padding: 8px;
+    -webkit-tap-highlight-color: transparent;
   }
-  .hero-scroll span { font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); }
+  .hero-scroll:hover .scroll-arrow svg { stroke: var(--gold-light); }
+  .hero-scroll span { font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); pointer-events: none; }
   .scroll-arrow { display: flex; flex-direction: column; align-items: center; gap: 3px; }
   .scroll-arrow svg { animation: arrowBounce 1.8s ease-in-out infinite; }
   .scroll-arrow svg:nth-child(2) { animation-delay: 0.2s; opacity: 0.55; }
@@ -148,7 +151,7 @@
   @media (min-width: 600px) and (max-width: 859px) {
     .hero { padding: 80px 48px 56px; }
     .hero-photo { width: 42vw; max-width: 260px; margin-bottom: 36px; }
-    .hero-names h1 { font-size: 72px; }
+    .hero-names h1 { font-size: 58px; }
     .hero-ampersand { font-size: 28px; margin: 10px 0; }
     .hero-ornament { font-size: 10px; letter-spacing: 0.3em; margin-bottom: 24px; }
     .hero-date { font-size: 12px; }
@@ -177,7 +180,7 @@
       justify-content: center; align-items: center;
       padding: 80px 64px;
     }
-    .hero-names h1 { font-size: clamp(72px, 5.5vw, 88px); }
+    .hero-names h1 { font-size: clamp(52px, 4.5vw, 68px); }
     .hero-ampersand { font-size: 30px; margin: 12px 0; }
     .hero-ornament { font-size: 10px; letter-spacing: 0.3em; margin-bottom: 28px; }
     .hero-date { font-size: 12px; }
@@ -187,7 +190,7 @@
   }
   @media (min-width: 1200px) {
     .hero-right { padding: 80px 96px; }
-    .hero-names h1 { font-size: 96px; }
+    .hero-names h1 { font-size: 76px; }
   }
 
   /* ===========================================
@@ -560,6 +563,209 @@
   .reveal-d3 { transition-delay: 0.24s; }
 
   /* ===========================================
+     COUNTDOWN TIMER
+  =========================================== */
+  .hero-countdown {
+    margin-top: 28px;
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: flex-end;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.95s forwards;
+  }
+  .countdown-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 52px;
+  }
+  .countdown-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .countdown-label {
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    margin-top: 4px;
+  }
+  .countdown-sep {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--gold-light);
+    line-height: 1;
+    margin-bottom: 18px;
+    flex-shrink: 0;
+  }
+
+  /* RSVP button in hero */
+  .hero-rsvp {
+    margin-top: 32px;
+    opacity: 0;
+    animation: fadeUp 0.9s 1.1s forwards;
+    position: relative;
+  }
+  .rsvp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--white);
+    background: var(--gold);
+    padding: 17px 48px;
+    border-radius: 60px;
+    text-decoration: none;
+    transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+    box-shadow: 0 6px 28px rgba(184,149,106,0.45);
+    border: none; cursor: pointer;
+    position: relative;
+    z-index: 1;
+  }
+  /* pulsing ring behind button */
+  .rsvp-btn::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 60px;
+    border: 1.5px solid rgba(184,149,106,0.4);
+    animation: rsvpPulse 2.4s ease-out infinite;
+  }
+  .rsvp-btn::after {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border-radius: 60px;
+    border: 1px solid rgba(184,149,106,0.2);
+    animation: rsvpPulse 2.4s ease-out 0.4s infinite;
+  }
+  @keyframes rsvpPulse {
+    0%   { opacity: 1;   transform: scale(1); }
+    70%  { opacity: 0;   transform: scale(1.08); }
+    100% { opacity: 0;   transform: scale(1.08); }
+  }
+  .rsvp-btn:hover {
+    background: #a07d56;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 36px rgba(184,149,106,0.5);
+  }
+  .rsvp-btn:hover::before,
+  .rsvp-btn:hover::after { animation: none; opacity: 0; }
+  .rsvp-btn:active { transform: translateY(0); }
+
+  @media (min-width: 860px) {
+    .hero-countdown { margin-top: 32px; gap: 8px; }
+    .countdown-num { font-size: 44px; }
+    .countdown-unit { min-width: 58px; }
+    .hero-rsvp { margin-top: 36px; }
+    .rsvp-btn { padding: 18px 56px; font-size: 11px; }
+  }
+
+  /* ===========================================
+     RSVP MODAL
+  =========================================== */
+  .rsvp-modal-backdrop {
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(44,36,32,0.65);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .rsvp-modal-backdrop.open {
+    opacity: 1; pointer-events: all;
+  }
+  .rsvp-modal {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    width: 100%; max-width: 600px;
+    max-height: 90vh;
+    display: flex; flex-direction: column;
+    box-shadow: 0 24px 80px rgba(44,36,32,0.25);
+    transform: translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+  }
+  .rsvp-modal-backdrop.open .rsvp-modal {
+    transform: translateY(0);
+  }
+  .rsvp-modal-header {
+    padding: 20px 24px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--cream-dark);
+    flex-shrink: 0;
+  }
+  .rsvp-modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 400; color: var(--ink);
+  }
+  .rsvp-modal-close {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 1px solid var(--cream-dark); background: var(--cream);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    color: var(--ink-light); font-size: 18px; line-height: 1;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .rsvp-modal-close:hover { background: var(--cream-dark); }
+  .rsvp-modal iframe {
+    width: 100%; flex: 1; border: none;
+    min-height: 480px;
+  }
+
+  /* ===========================================
+     FAB (Floating Action Button)
+  =========================================== */
+  .rsvp-fab {
+    position: fixed;
+    bottom: 28px; right: 24px;
+    z-index: 200;
+    display: flex; align-items: center; gap: 10px;
+    background: var(--gold);
+    color: var(--white);
+    border: none; cursor: pointer;
+    padding: 14px 24px 14px 20px;
+    border-radius: 40px;
+    box-shadow: 0 6px 28px rgba(184,149,106,0.45);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1),
+                box-shadow 0.25s ease,
+                opacity 0.3s ease,
+                background 0.2s;
+    /* hidden by default, shown after scroll */
+    opacity: 0; pointer-events: none;
+    transform: translateY(16px);
+  }
+  .rsvp-fab.visible {
+    opacity: 1; pointer-events: all;
+    transform: translateY(0);
+  }
+  .rsvp-fab:hover {
+    background: #a07d56;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 36px rgba(184,149,106,0.5);
+  }
+  .rsvp-fab svg { flex-shrink: 0; }
+
+  @media (max-width: 379px) {
+    .rsvp-fab { bottom: 20px; right: 16px; padding: 13px 18px 13px 16px; font-size: 9px; }
+  }
+
+  /* ===========================================
      TINY PHONES (< 380px) — safety net
   =========================================== */
   @media (max-width: 379px) {
@@ -593,7 +799,7 @@
     </div>
   </div>
   <div class="hero-right">
-  <div class="hero-ornament">Together with our families, we invite you to celebrate</div>
+  <div class="hero-ornament">Together with our families, we joyfully invite you to celebrate our wedding</div>
   <div class="hero-names">
     <h1>Lance</h1>
     <span class="hero-ampersand">&amp;</span>
@@ -603,7 +809,36 @@
     <div class="hero-date">12 ~ 14 September 2026</div>
     <div class="hero-location">Kampung Chui Chak, Langkap, Perak, Malaysia</div>
   </div>
-  <div class="hero-scroll">
+
+  <!-- COUNTDOWN -->
+  <div class="hero-countdown">
+    <div class="countdown-unit">
+      <span class="countdown-num" id="cd-days">--</span>
+      <span class="countdown-label">Days</span>
+    </div>
+    <div class="countdown-sep">·</div>
+    <div class="countdown-unit">
+      <span class="countdown-num" id="cd-hours">--</span>
+      <span class="countdown-label">Hours</span>
+    </div>
+    <div class="countdown-sep">·</div>
+    <div class="countdown-unit">
+      <span class="countdown-num" id="cd-mins">--</span>
+      <span class="countdown-label">Mins</span>
+    </div>
+    <div class="countdown-sep">·</div>
+    <div class="countdown-unit">
+      <span class="countdown-num" id="cd-secs">--</span>
+      <span class="countdown-label">Secs</span>
+    </div>
+  </div>
+
+  <!-- RSVP in hero -->
+  <div class="hero-rsvp">
+    <button class="rsvp-btn" onclick="openRsvp()">RSVP Now</button>
+  </div>
+
+  <button class="hero-scroll" onclick="scrollToContent()" aria-label="Scroll down">
     <span>Scroll</span>
     <div class="scroll-arrow">
       <svg width="22" height="12" viewBox="0 0 22 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -616,7 +851,7 @@
         <path d="M1 1L11 10L21 1" stroke="#b8956a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
-  </div>
+  </button>
   </div>
 </section>
 
@@ -629,7 +864,7 @@
       <div class="divider-line"></div>
     </div>
     <div class="welcome-text">
-      <p>We would be honoured to have you join us as we begin this new chapter together. Come celebrate with us in the heart of rural Perak &mdash; amidst lush paddy fields, warm Malaysian hospitality, and the people we love most.</p>
+      <p>It would mean the world to have you with us as we begin this new chapter. Join us in the heart of rural Perak, surrounded by lush paddy fields, warm hospitality, and all the people we hold dear.</p>
     </div>
   </div>
 </section>
@@ -651,8 +886,8 @@
           <div class="event-content">
             <div class="event-name">Betrothal Ceremony</div>
             <div class="event-name-cn">过大礼 Gu&ograve; D&agrave; Lǐ</div>
-            <div class="event-note">A traditional exchange of gifts between families &mdash; one of the most meaningful rituals in Chinese wedding custom.</div>
-            <a href="https://maps.app.goo.gl/uiXtm9Ym7wxK7bsx9" target="_blank" rel="noopener" class="map-card-link">
+            <div class="event-note">A time-honoured exchange of gifts between both families, and one of the most cherished rituals in Chinese wedding tradition.</div>
+            <a href="https://maps.app.goo.gl/2CxhyZ3tJNACBZtu7?g_st=ic" target="_blank" rel="noopener" class="map-card-link">
               <div class="map-card">
                 <div class="map-card-visual">
                   <div class="map-topo-roads">
@@ -689,8 +924,8 @@
           <div class="event-content">
             <div class="event-name">Buffet Dinner</div>
             <div class="event-name-cn">自助餐</div>
-            <div class="event-note">An evening of good food and even better company. Come hungry and stay as long as you like.</div>
-            <a href="https://maps.app.goo.gl/ZCFEM2RsFV3JVA7X9" target="_blank" rel="noopener" class="map-card-link">
+            <div class="event-note">An evening of great food and even better company. Come with an appetite and stay for as long as you like.</div>
+            <a href="https://maps.app.goo.gl/LSVAPruTJ6Mq9Wgg6?g_st=ic" target="_blank" rel="noopener" class="map-card-link">
               <div class="map-card">
                 <div class="map-card-visual">
                   <div class="map-topo-roads">
@@ -731,8 +966,8 @@
           <div class="event-content">
             <div class="event-name">Tea Ceremony</div>
             <div class="event-name-cn">敬茶 J&igrave;ng Ch&aacute;</div>
-            <div class="event-note">A heartfelt tradition where the couple serves tea to elders as a gesture of respect and gratitude.</div>
-            <a href="https://maps.app.goo.gl/uiXtm9Ym7wxK7bsx9" target="_blank" rel="noopener" class="map-card-link">
+            <div class="event-note">A meaningful tradition in which the couple serves tea to their elders, offering gratitude and respect to both families.</div>
+            <a href="https://maps.app.goo.gl/2CxhyZ3tJNACBZtu7?g_st=ic" target="_blank" rel="noopener" class="map-card-link">
               <div class="map-card">
                 <div class="map-card-visual">
                   <div class="map-topo-roads">
@@ -769,8 +1004,8 @@
           <div class="event-content">
             <div class="event-name">Wedding Banquet</div>
             <div class="event-name-cn">晚宴 Wǎn Y&agrave;n</div>
-            <div class="event-note">The main celebration &mdash; a traditional Chinese dinner banquet with family and friends.</div>
-            <a href="https://maps.app.goo.gl/ZCFEM2RsFV3JVA7X9" target="_blank" rel="noopener" class="map-card-link">
+            <div class="event-note">The heart of our celebration. A traditional Chinese banquet dinner shared with family and friends.</div>
+            <a href="https://maps.app.goo.gl/z882SJvLvjna4kgJA?g_st=ic" target="_blank" rel="noopener" class="map-card-link">
               <div class="map-card">
                 <div class="map-card-visual">
                   <div class="map-topo-roads">
@@ -805,7 +1040,7 @@
     </div>
 
     <div class="timeline-note reveal">
-      Timings are approximate and may shift slightly due to weather or logistics. Between events, the time is yours &mdash; feel free to relax, explore the kampung, or simply enjoy the countryside at your own pace.
+      Timings are a guide and may shift slightly depending on weather or logistics. The time between events is yours to enjoy freely. Take a walk through the kampung, rest up, or simply soak in the countryside.
     </div>
   </div>
 </section>
@@ -817,7 +1052,7 @@
       <div class="section-label">Where You&rsquo;ll Stay</div>
       <div class="section-title">Accommodation</div>
       <div class="section-body">
-        <p>We&rsquo;ve arranged homestay accommodation right in Kampung Chui Chak so you&rsquo;ll be close to all the festivities. The exact location will be confirmed once we have a final headcount &mdash; there&rsquo;s no need to book anything on your own.</p>
+        <p>We have arranged homestay accommodation right within Kampung Chui Chak, so you will be close to all the festivities. No booking is needed on your end. We will confirm the exact details once headcount is finalised.</p>
       </div>
     </div>
 
@@ -853,7 +1088,7 @@
     <div class="travel-option reveal">
       <div class="travel-option-badge">Recommended</div>
       <h3>Fly Direct to Ipoh (IPH)</h3>
-      <p>The most straightforward route. Scoot operates daily direct flights from Singapore Changi to Ipoh &mdash; just about 1 hour 15 minutes in the air.</p>
+      <p>The simplest way to get here. Scoot operates daily direct flights from Singapore Changi to Ipoh, with a flight time of around 1 hour 15 minutes.</p>
       <div class="travel-details">
         <div class="travel-detail"><span class="td-label">✈️ Route:</span> <span>SIN &rarr; IPH via Scoot</span></div>
         <div class="travel-detail"><span class="td-label">💰 Fare:</span> <span>From ~SGD 300 return (subject to availability)</span></div>
@@ -863,18 +1098,18 @@
 
       <div class="transport-box">
         <h4>From Ipoh to Kampung Chui Chak</h4>
-        <p>About a 1.5-hour drive from the airport. You can rent a car (small-town driving &mdash; best for experienced drivers) or join a group van we&rsquo;ll coordinate with other guests closer to the date.</p>
+        <p>It is roughly a 1.5-hour drive from Ipoh Airport to the kampung. You are welcome to rent a car, or join a shared van that we will coordinate with other guests closer to the date.</p>
       </div>
     </div>
 
     <div class="travel-option reveal">
       <div class="travel-option-badge alt">Alternative</div>
       <h3>Fly to Kuala Lumpur (KUL)</h3>
-      <p>Fly to KL, rent a car, and road-trip north &mdash; about a 2-hour drive. A great option if you&rsquo;d like to explore KL or enjoy the scenic countryside along the way.</p>
+      <p>Fly into Kuala Lumpur, rent a car, and enjoy the drive north. It is about 2 hours from KL and a wonderful option if you would like to explore the city or take in the scenery along the way.</p>
     </div>
 
     <div class="contact-info reveal">
-      <p>Need help booking or coordinating flights?</p>
+      <p>If you need any help with booking or travel arrangements, please reach out to:</p>
       <p style="margin-top: 6px;">
         <strong>Groom&rsquo;s side:</strong> Sallie Wong<br><a href="tel:+6596601694">+65 9660 1694</a>
       </p>
@@ -892,7 +1127,7 @@
       <div class="section-label">While You&rsquo;re Here</div>
       <div class="section-title">Explore the Neighbourhood</div>
       <div class="section-body">
-        <p>Between celebrations, there&rsquo;s plenty to discover nearby. The pace is slow, the scenery is beautiful, and the local food is not to be missed.</p>
+        <p>There is plenty to take in between celebrations. The pace here is gentle, the scenery is lovely, and the local food is absolutely worth trying.</p>
       </div>
     </div>
 
@@ -905,7 +1140,7 @@
           </div>
           <div class="explore-card-body">
             <h3>Teluk Intan</h3>
-            <p>Visit the famous Leaning Tower and wander through the charming streets of Perak&rsquo;s fourth-largest town &mdash; just a short drive away.</p>
+            <p>Pay a visit to the iconic Leaning Tower and wander the charming heritage streets of this riverside town, just a short drive from the kampung.</p>
           </div>
         </div>
       </a>
@@ -918,7 +1153,7 @@
           </div>
           <div class="explore-card-body">
             <h3>Chui Chak Paddy Fields</h3>
-            <p>Stroll through the paddy fields of 水闸 at golden hour &mdash; one of the most beautiful landscapes in Perak. Bring your camera.</p>
+            <p>Take a walk through the paddy fields of 水闸 at golden hour. The views are truly stunning, so do bring your camera.</p>
           </div>
         </div>
       </a>
@@ -931,7 +1166,7 @@
           </div>
           <div class="explore-card-body">
             <h3>Ipoh &amp; Cave Temples</h3>
-            <p>Head to Ipoh for stunning limestone cave temples, legendary street food, and vibrant old-town murals.</p>
+            <p>Spend some time in Ipoh and explore the limestone cave temples, old-town street art, and some of the best street food in Malaysia.</p>
           </div>
         </div>
       </a>
@@ -946,8 +1181,8 @@
     <div class="closing-photo-overlay"></div>
     <div class="closing-content reveal">
       <div class="section-label">See You There</div>
-      <div class="section-title">We can&rsquo;t wait to celebrate<br>with you</div>
-      <div class="closing-subtitle">From our families to yours &mdash; thank you for being part of our story.</div>
+      <div class="section-title">We look forward to celebrating<br>with you</div>
+      <div class="closing-subtitle">From our families to yours, thank you for being part of this moment.</div>
       <div class="closing-date">12 ~ 14 September 2026 &middot; Kampung Chui Chak, Perak</div>
     </div>
   </div>
@@ -957,17 +1192,95 @@
   <p>Lance &amp; Xiao Hui &middot; September 2026</p>
 </footer>
 
+<!-- RSVP FAB -->
+<button class="rsvp-fab" id="rsvp-fab" onclick="openRsvp()" aria-label="RSVP">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+  </svg>
+  RSVP
+</button>
+
+<!-- RSVP MODAL -->
+<div class="rsvp-modal-backdrop" id="rsvp-backdrop" onclick="handleBackdropClick(event)">
+  <div class="rsvp-modal">
+    <div class="rsvp-modal-header">
+      <div class="rsvp-modal-title">RSVP — Lance &amp; Xiao Hui</div>
+      <button class="rsvp-modal-close" onclick="closeRsvp()" aria-label="Close">&#x2715;</button>
+    </div>
+    <iframe
+      src="https://docs.google.com/forms/d/e/1FAIpQLSe-eM7sqKQvPJSzBOTRjNrsln-bLyKGxcQoSvw78XiGyQMjZQ/viewform?embedded=true"
+      title="RSVP Form"
+      loading="lazy">
+      Loading…
+    </iframe>
+  </div>
+</div>
+
 <script>
+  /* ---- Scroll button ---- */
+  function scrollToContent() {
+    var target = document.querySelector('.hero').nextElementSibling;
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  /* ---- Reveal on scroll ---- */
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
+      if (entry.isIntersecting) entry.target.classList.add('visible');
     });
   }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
 
-  document.querySelectorAll('.reveal').forEach(function(el) {
-    observer.observe(el);
+  /* ---- FAB: show after hero ---- */
+  var fab = document.getElementById('rsvp-fab');
+  var hero = document.querySelector('.hero');
+  var fabObserver = new IntersectionObserver(function(entries) {
+    // When hero is NOT intersecting, show FAB
+    fab.classList.toggle('visible', !entries[0].isIntersecting);
+  }, { threshold: 0.15 });
+  fabObserver.observe(hero);
+
+  /* ---- Countdown to 12 Sep 2026 08:00 MYT (UTC+8) ---- */
+  var target = new Date('2026-09-12T08:00:00+08:00').getTime();
+  function updateCountdown() {
+    var now = Date.now();
+    var diff = target - now;
+    if (diff <= 0) {
+      document.getElementById('cd-days').textContent  = '00';
+      document.getElementById('cd-hours').textContent = '00';
+      document.getElementById('cd-mins').textContent  = '00';
+      document.getElementById('cd-secs').textContent  = '00';
+      return;
+    }
+    var d = Math.floor(diff / 86400000);
+    var h = Math.floor((diff % 86400000) / 3600000);
+    var m = Math.floor((diff % 3600000)  / 60000);
+    var s = Math.floor((diff % 60000)    / 1000);
+    document.getElementById('cd-days').textContent  = String(d).padStart(2,'0');
+    document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-mins').textContent  = String(m).padStart(2,'0');
+    document.getElementById('cd-secs').textContent  = String(s).padStart(2,'0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  /* ---- RSVP modal ---- */
+  function openRsvp() {
+    document.getElementById('rsvp-backdrop').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeRsvp() {
+    document.getElementById('rsvp-backdrop').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function handleBackdropClick(e) {
+    if (e.target === document.getElementById('rsvp-backdrop')) closeRsvp();
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeRsvp();
   });
 </script>
 
