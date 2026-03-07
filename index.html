@@ -674,6 +674,9 @@
   function handleBackdropClick(e) { if (e.target === backdrop) closeRsvp(); }
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeRsvp(); });
 
+  if (history.scrollRestoration) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
+
   ['touchstart','touchmove'].forEach(function(t) {
     document.addEventListener(t, function(){}, { passive: true });
     document.body.addEventListener(t, function(){}, { passive: true });
