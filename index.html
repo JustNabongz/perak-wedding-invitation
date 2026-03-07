@@ -10,7 +10,9 @@
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
+<!-- Non-blocking font load — swap trims down to just weights actually used -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&family=Noto+Serif+SC:wght@300;400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&family=Noto+Serif+SC:wght@300;400&display=swap"></noscript>
 <style>
   /* ===========================================
      DESIGN TOKENS
@@ -31,7 +33,13 @@
      RESET
   =========================================== */
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  html {
+    -webkit-text-size-adjust: 100%;
+    overflow-x: clip;
+  }
+  @media (prefers-reduced-motion: no-preference) and (min-width: 860px) {
+    html { scroll-behavior: smooth; }
+  }
   img  { display: block; max-width: 100%; }
 
   body {
@@ -40,9 +48,12 @@
     color: var(--ink);
     line-height: 1.7;
     font-weight: 300;
-    overflow-x: hidden;
+    overflow-x: clip;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* smooth native momentum scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
   }
 
   /* ===========================================
@@ -102,7 +113,7 @@
     box-shadow: 0 20px 60px rgba(44,36,32,0.12), 0 0 0 1px rgba(184,149,106,0.1);
     opacity: 0; animation: fadeUp 1.1s 0.4s forwards;
   }
-  .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; will-change: transform; }
 
   .hero-right {
     display: flex; flex-direction: column; align-items: center;
@@ -143,7 +154,7 @@
   .hero-scroll:hover .scroll-arrow svg { stroke: var(--gold-light); }
   .hero-scroll span { font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); pointer-events: none; }
   .scroll-arrow { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-  .scroll-arrow svg { animation: arrowBounce 1.8s ease-in-out infinite; }
+  .scroll-arrow svg { animation: arrowBounce 1.8s ease-in-out infinite; will-change: transform, opacity; }
   .scroll-arrow svg:nth-child(2) { animation-delay: 0.2s; opacity: 0.55; }
   .scroll-arrow svg:nth-child(3) { animation-delay: 0.4s; opacity: 0.25; }
 
@@ -167,7 +178,9 @@
     }
     .hero-left {
       flex: 0 0 44%; position: sticky; top: 0;
-      height: 100vh; overflow: hidden; justify-content: unset;
+      height: 100vh; overflow: clip; justify-content: unset;
+      contain: layout style;
+      will-change: transform;
     }
     .hero-photo {
       width: 100%; max-width: 100%; height: 100%;
@@ -554,10 +567,14 @@
   }
   .reveal {
     opacity: 0; transform: translateY(22px);
-    transition: opacity 0.85s cubic-bezier(0.22,1,0.36,1),
-                transform 0.85s cubic-bezier(0.22,1,0.36,1);
+    transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1),
+                transform 0.7s cubic-bezier(0.22,1,0.36,1);
+    will-change: opacity, transform;
   }
-  .reveal.visible  { opacity: 1; transform: translateY(0); }
+  .reveal.visible  {
+    opacity: 1; transform: translateY(0);
+    will-change: auto; /* release GPU layer after animation */
+  }
   .reveal-d1 { transition-delay: 0.08s; }
   .reveal-d2 { transition-delay: 0.16s; }
   .reveal-d3 { transition-delay: 0.24s; }
@@ -639,20 +656,21 @@
     inset: -6px;
     border-radius: 60px;
     border: 1.5px solid rgba(184,149,106,0.4);
-    animation: rsvpPulse 2.4s ease-out infinite;
+    animation: rsvpPulse 2.2s ease-out infinite;
+    will-change: transform, opacity;
   }
   .rsvp-btn::after {
     content: '';
     position: absolute;
-    inset: -12px;
+    inset: -6px;
     border-radius: 60px;
     border: 1px solid rgba(184,149,106,0.2);
-    animation: rsvpPulse 2.4s ease-out 0.4s infinite;
+    animation: rsvpPulse 2.2s ease-out 0.55s infinite;
+    will-change: transform, opacity;
   }
   @keyframes rsvpPulse {
-    0%   { opacity: 1;   transform: scale(1); }
-    70%  { opacity: 0;   transform: scale(1.08); }
-    100% { opacity: 0;   transform: scale(1.08); }
+    0%   { transform: scale(1);    opacity: 0.6; }
+    100% { transform: scale(1.18); opacity: 0; }
   }
   .rsvp-btn:hover {
     background: #a07d56;
@@ -749,6 +767,7 @@
     /* hidden by default, shown after scroll */
     opacity: 0; pointer-events: none;
     transform: translateY(16px);
+    will-change: transform, opacity;
   }
   .rsvp-fab.visible {
     opacity: 1; pointer-events: all;
@@ -795,11 +814,11 @@
 <section class="hero">
   <div class="hero-left">
     <div class="hero-photo">
-      <img src="https://framerusercontent.com/images/WHWnTHi4Dj5YnPBGfkYGSdUpzo.jpeg" alt="Lance and Xiao Hui" />
+      <img src="https://framerusercontent.com/images/WHWnTHi4Dj5YnPBGfkYGSdUpzo.jpeg" alt="Lance and Xiao Hui" fetchpriority="high" decoding="async" />
     </div>
   </div>
   <div class="hero-right">
-  <div class="hero-ornament">Together with our families, we joyfully invite you to celebrate our wedding</div>
+  <div class="hero-ornament">Together with our families, we joyfully invite you<br>to celebrate our wedding</div>
   <div class="hero-names">
     <h1>Lance</h1>
     <span class="hero-ampersand">&amp;</span>
@@ -1135,7 +1154,7 @@
       <a href="https://share.google/IYcEcxfHAoEdS5BKv" target="_blank" rel="noopener" class="explore-card-link reveal reveal-d1">
         <div class="explore-card">
           <div class="explore-thumb">
-            <img class="explore-card-img" src="https://i.ibb.co/qFWTQ5pn/download-5.jpg" alt="Leaning Tower of Teluk Intan" />
+            <img loading="lazy" decoding="async" class="explore-card-img" src="https://i.ibb.co/qFWTQ5pn/download-5.jpg" alt="Leaning Tower of Teluk Intan" />
             <div class="explore-card-badge">View on Maps ↗</div>
           </div>
           <div class="explore-card-body">
@@ -1148,7 +1167,7 @@
       <a href="https://share.google/RcJx27QuTHDqR6GbY" target="_blank" rel="noopener" class="explore-card-link reveal reveal-d2">
         <div class="explore-card">
           <div class="explore-thumb">
-            <img class="explore-card-img" src="https://i.ibb.co/rGBg57gk/download-6.jpg" alt="Chui Chak paddy fields" />
+            <img loading="lazy" decoding="async" class="explore-card-img" src="https://i.ibb.co/rGBg57gk/download-6.jpg" alt="Chui Chak paddy fields" />
             <div class="explore-card-badge">View on Maps ↗</div>
           </div>
           <div class="explore-card-body">
@@ -1161,7 +1180,7 @@
       <a href="https://share.google/o1aLQOXTiUkf23blG" target="_blank" rel="noopener" class="explore-card-link reveal reveal-d3">
         <div class="explore-card">
           <div class="explore-thumb">
-            <img class="explore-card-img" src="https://i.ibb.co/LXHyHR80/download-7.jpg" alt="Ipoh limestone cave temple" />
+            <img loading="lazy" decoding="async" class="explore-card-img" src="https://i.ibb.co/LXHyHR80/download-7.jpg" alt="Ipoh limestone cave temple" />
             <div class="explore-card-badge">View on Maps ↗</div>
           </div>
           <div class="explore-card-body">
@@ -1177,7 +1196,7 @@
 <!-- CLOSING WITH FUJI PHOTO -->
 <section class="closing">
   <div class="closing-photo">
-    <img src="https://framerusercontent.com/images/RDABEdI89aC07wjMrS5zB185w.jpeg" alt="Lance and Xiao Hui at sunset" />
+    <img loading="lazy" decoding="async" src="https://framerusercontent.com/images/RDABEdI89aC07wjMrS5zB185w.jpeg" alt="Lance and Xiao Hui at sunset" />
     <div class="closing-photo-overlay"></div>
     <div class="closing-content reveal">
       <div class="section-label">See You There</div>
@@ -1226,22 +1245,30 @@
     }
   }
 
-  /* ---- Reveal on scroll ---- */
+  /* ---- Reveal on scroll (unobserve after visible = no wasted observers) ---- */
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
-      if (entry.isIntersecting) entry.target.classList.add('visible');
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target); /* stop watching once revealed */
+      }
     });
-  }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+  }, { threshold: 0.06, rootMargin: '0px 0px -16px 0px' });
   document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
 
   /* ---- FAB: show after hero ---- */
   var fab = document.getElementById('rsvp-fab');
   var hero = document.querySelector('.hero');
   var fabObserver = new IntersectionObserver(function(entries) {
-    // When hero is NOT intersecting, show FAB
     fab.classList.toggle('visible', !entries[0].isIntersecting);
-  }, { threshold: 0.15 });
+  }, { threshold: 0.1 });
   fabObserver.observe(hero);
+
+  /* ---- Pause looping animations when tab is hidden (saves battery/CPU) ---- */
+  document.addEventListener('visibilitychange', function() {
+    var pausable = document.querySelectorAll('.scroll-arrow svg, .rsvp-btn::before, .rsvp-btn::after');
+    document.body.style.setProperty('--anim-state', document.hidden ? 'paused' : 'running');
+  });
 
   /* ---- Countdown to 12 Sep 2026 08:00 MYT (UTC+8) ---- */
   var target = new Date('2026-09-12T08:00:00+08:00').getTime();
@@ -1271,10 +1298,14 @@
   function openRsvp() {
     document.getElementById('rsvp-backdrop').classList.add('open');
     document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
   }
   function closeRsvp() {
     document.getElementById('rsvp-backdrop').classList.remove('open');
     document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.width = '';
   }
   function handleBackdropClick(e) {
     if (e.target === document.getElementById('rsvp-backdrop')) closeRsvp();
