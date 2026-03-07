@@ -32,7 +32,6 @@
     color: var(--ink);
     line-height: 1.7;
     font-weight: 300;
-    /* NO overflow hidden/clip on body — kills scroll in WebViews */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-overflow-scrolling: touch;
@@ -92,13 +91,13 @@
     aspect-ratio: 2/3;
     border-radius: 50% 50% 4% 4% / 34% 34% 3% 3%;
     flex-shrink: 0;
+    position: relative;
+    touch-action: pan-y;
     margin-bottom: 28px;
     box-shadow: 0 20px 60px rgba(44,36,32,0.12), 0 0 0 1px rgba(184,149,106,0.1);
     opacity: 0; animation: fadeUp 1.1s 0.4s forwards;
-    touch-action: pan-y;
-    position: relative;
   }
-  .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; will-change: transform; touch-action: pan-y; pointer-events: none; }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; pointer-events: none; touch-action: pan-y; will-change: transform; }
 
   .hero-right {
     display: flex; flex-direction: column; align-items: center;
@@ -139,7 +138,7 @@
   .hero-scroll:hover .scroll-arrow svg { stroke: var(--gold-light); }
   .hero-scroll span { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); pointer-events: none; }
   .scroll-arrow { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-  .scroll-arrow svg { animation: arrowBounce 1.8s ease-in-out infinite; will-change: transform, opacity; }
+  .scroll-arrow svg { animation: arrowBounce 1.8s ease-in-out infinite; }
   .scroll-arrow svg:nth-child(2) { animation-delay: 0.2s; opacity: 0.55; }
   .scroll-arrow svg:nth-child(3) { animation-delay: 0.4s; opacity: 0.25; }
 
@@ -279,7 +278,7 @@
     font-size: 22px; font-weight: 500; color: var(--ink); margin-bottom: 2px;
   }
   .event-name-cn {
-    font-family: 'Noto Serif SC', 'PingFang SC', 'Hiragino Sans GB', serif;
+    font-family: 'Noto Serif SC', serif;
     font-size: 15px; color: var(--ink-light); font-weight: 300; margin-bottom: 6px;
   }
   .event-note { font-size: 15px; color: var(--sage); font-style: italic; line-height: 1.6; }
@@ -539,40 +538,19 @@
     color: rgba(250,246,240,0.25); text-transform: uppercase;
   }
 
-  /* ===========================================
-     HERO MOBILE ENHANCEMENTS
-  =========================================== */
-  /* Date ribbon above photo — mobile only */
+  /* hero date ribbon */
   .hero-date-ribbon {
     display: flex; align-items: center; gap: 12px;
     margin-bottom: 20px;
     opacity: 0; animation: fadeUp 0.8s 0.1s forwards;
     width: 100%;
   }
-  .hero-ribbon-line {
-    flex: 1; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
-  }
-  .hero-ribbon-text {
-    font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
-    color: var(--gold); white-space: nowrap; font-weight: 400;
-  }
-  /* Corner accents on photo */
-  .photo-corner {
-    position: absolute; width: 18px; height: 18px;
-    pointer-events: none;
-  }
-  .photo-corner-tl { top: 10px; left: 10px;
-    border-top: 1.5px solid rgba(184,149,106,0.6);
-    border-left: 1.5px solid rgba(184,149,106,0.6); }
-  .photo-corner-tr { top: 10px; right: 10px;
-    border-top: 1.5px solid rgba(184,149,106,0.6);
-    border-right: 1.5px solid rgba(184,149,106,0.6); }
-  /* hide ribbon on desktop */
-  @media (min-width: 860px) {
-    .hero-date-ribbon { display: none; }
-    .photo-corner { display: none; }
-  }
+  .hero-ribbon-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-light), transparent); }
+  .hero-ribbon-text { font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); white-space: nowrap; font-weight: 400; }
+  .photo-corner { position: absolute; width: 18px; height: 18px; pointer-events: none; }
+  .photo-corner-tl { top: 10px; left: 10px; border-top: 1.5px solid rgba(160,125,82,0.6); border-left: 1.5px solid rgba(160,125,82,0.6); }
+  .photo-corner-tr { top: 10px; right: 10px; border-top: 1.5px solid rgba(160,125,82,0.6); border-right: 1.5px solid rgba(160,125,82,0.6); }
+  @media (min-width: 860px) { .hero-date-ribbon { display: none; } .photo-corner { display: none; } }
 
   /* ===========================================
      ANIMATIONS & REVEAL
@@ -591,10 +569,7 @@
                 transform 0.7s cubic-bezier(0.22,1,0.36,1);
     will-change: opacity, transform;
   }
-  .reveal.visible  {
-    opacity: 1; transform: translateY(0);
-    will-change: auto; /* release GPU layer after animation */
-  }
+  .reveal.visible  { opacity: 1; transform: translateY(0); will-change: auto; }
   .reveal-d1 { transition-delay: 0.08s; }
   .reveal-d2 { transition-delay: 0.16s; }
   .reveal-d3 { transition-delay: 0.24s; }
@@ -676,17 +651,15 @@
     inset: -6px;
     border-radius: 60px;
     border: 1.5px solid rgba(184,149,106,0.4);
-    animation: rsvpPulse 2.2s ease-out infinite;
-    will-change: transform, opacity;
+    animation: rsvpPulse 2.4s ease-out infinite;
   }
   .rsvp-btn::after {
     content: '';
     position: absolute;
-    inset: -6px;
+    inset: -12px;
     border-radius: 60px;
     border: 1px solid rgba(184,149,106,0.2);
-    animation: rsvpPulse 2.2s ease-out 0.55s infinite;
-    will-change: transform, opacity;
+    animation: rsvpPulse 2.4s ease-out 0.4s infinite;
   }
   @keyframes rsvpPulse {
     0%   { transform: scale(1);    opacity: 0.6; }
@@ -770,13 +743,14 @@
     position: fixed;
     bottom: 28px; right: 24px;
     z-index: 200;
-    display: flex; align-items: center; gap: 12px;
+    display: flex; align-items: center; gap: 10px;
     background: var(--gold);
     color: var(--white);
     border: none; cursor: pointer;
     padding: 17px 30px 17px 24px;
     border-radius: 50px;
     box-shadow: 0 8px 32px rgba(184,149,106,0.5);
+    will-change: transform, opacity;
     font-family: 'DM Sans', sans-serif;
     font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500;
     text-decoration: none;
@@ -784,9 +758,9 @@
                 box-shadow 0.25s ease,
                 opacity 0.3s ease,
                 background 0.2s;
+    /* hidden by default, shown after scroll */
     opacity: 0; pointer-events: none;
     transform: translateY(16px);
-    will-change: transform, opacity;
   }
   .rsvp-fab.visible {
     opacity: 1; pointer-events: all;
@@ -800,7 +774,7 @@
   .rsvp-fab svg { flex-shrink: 0; }
 
   @media (max-width: 379px) {
-    .rsvp-fab { bottom: 20px; right: 16px; padding: 15px 22px 15px 18px; font-size: 12px; }
+    .rsvp-fab { bottom: 20px; right: 16px; padding: 13px 18px 13px 16px; font-size: 11px; }
   }
 
   /* ===========================================
@@ -831,19 +805,14 @@
 
 <!-- HERO -->
 <section class="hero">
-  <!-- mobile date ribbon — hidden on desktop -->
   <div class="hero-date-ribbon">
     <span class="hero-ribbon-line"></span>
     <span class="hero-ribbon-text">12 · 13 September 2026</span>
     <span class="hero-ribbon-line"></span>
   </div>
-
   <div class="hero-left">
     <div class="hero-photo">
-      <img src="https://framerusercontent.com/images/WHWnTHi4Dj5YnPBGfkYGSdUpzo.jpeg" alt="Lance and Xiao Hui" fetchpriority="high" decoding="async" />
-      <!-- subtle gold corner accents -->
-      <div class="photo-corner photo-corner-tl"></div>
-      <div class="photo-corner photo-corner-tr"></div>
+      <img loading="lazy" decoding="async" src="https://framerusercontent.com/images/WHWnTHi4Dj5YnPBGfkYGSdUpzo.jpeg" alt="Lance and Xiao Hui" fetchpriority="high" decoding="async" />
     </div>
   </div>
   <div class="hero-right">
@@ -1183,7 +1152,7 @@
       <a href="https://share.google/IYcEcxfHAoEdS5BKv" target="_blank" rel="noopener" class="explore-card-link reveal reveal-d1">
         <div class="explore-card">
           <div class="explore-thumb">
-            <img loading="lazy" decoding="async" class="explore-card-img" src="https://i.ibb.co/qFWTQ5pn/download-5.jpg" alt="Leaning Tower of Teluk Intan" />
+            <img class="explore-card-img" src="https://i.ibb.co/qFWTQ5pn/download-5.jpg" alt="Leaning Tower of Teluk Intan" />
             <div class="explore-card-badge">View on Maps ↗</div>
           </div>
           <div class="explore-card-body">
@@ -1196,7 +1165,7 @@
       <a href="https://share.google/RcJx27QuTHDqR6GbY" target="_blank" rel="noopener" class="explore-card-link reveal reveal-d2">
         <div class="explore-card">
           <div class="explore-thumb">
-            <img loading="lazy" decoding="async" class="explore-card-img" src="https://i.ibb.co/rGBg57gk/download-6.jpg" alt="Chui Chak paddy fields" />
+            <img class="explore-card-img" src="https://i.ibb.co/rGBg57gk/download-6.jpg" alt="Chui Chak paddy fields" />
             <div class="explore-card-badge">View on Maps ↗</div>
           </div>
           <div class="explore-card-body">
@@ -1209,7 +1178,7 @@
       <a href="https://share.google/o1aLQOXTiUkf23blG" target="_blank" rel="noopener" class="explore-card-link reveal reveal-d3">
         <div class="explore-card">
           <div class="explore-thumb">
-            <img loading="lazy" decoding="async" class="explore-card-img" src="https://i.ibb.co/LXHyHR80/download-7.jpg" alt="Ipoh limestone cave temple" />
+            <img class="explore-card-img" src="https://i.ibb.co/LXHyHR80/download-7.jpg" alt="Ipoh limestone cave temple" />
             <div class="explore-card-badge">View on Maps ↗</div>
           </div>
           <div class="explore-card-body">
@@ -1274,12 +1243,12 @@
     }
   }
 
-  /* ---- Reveal on scroll (unobserve after visible = no wasted observers) ---- */
+  /* ---- Reveal on scroll ---- */
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
-        observer.unobserve(entry.target); /* stop watching once revealed */
+        observer.unobserve(entry.target);
       }
     });
   }, { threshold: 0.06, rootMargin: '0px 0px -16px 0px' });
@@ -1289,15 +1258,10 @@
   var fab = document.getElementById('rsvp-fab');
   var hero = document.querySelector('.hero');
   var fabObserver = new IntersectionObserver(function(entries) {
+    // When hero is NOT intersecting, show FAB
     fab.classList.toggle('visible', !entries[0].isIntersecting);
-  }, { threshold: 0.1 });
+  }, { threshold: 0.15 });
   fabObserver.observe(hero);
-
-  /* ---- Pause looping animations when tab is hidden (saves battery/CPU) ---- */
-  document.addEventListener('visibilitychange', function() {
-    var pausable = document.querySelectorAll('.scroll-arrow svg, .rsvp-btn::before, .rsvp-btn::after');
-    document.body.style.setProperty('--anim-state', document.hidden ? 'paused' : 'running');
-  });
 
   /* ---- Countdown to 12 Sep 2026 08:00 MYT (UTC+8) ---- */
   var target = new Date('2026-09-12T08:00:00+08:00').getTime();
@@ -1327,14 +1291,10 @@
   function openRsvp() {
     document.getElementById('rsvp-backdrop').classList.add('open');
     document.body.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.width = '100%';
   }
   function closeRsvp() {
     document.getElementById('rsvp-backdrop').classList.remove('open');
     document.body.style.overflow = '';
-    document.body.style.position = '';
-    document.body.style.width = '';
   }
   function handleBackdropClick(e) {
     if (e.target === document.getElementById('rsvp-backdrop')) closeRsvp();
@@ -1343,26 +1303,17 @@
     if (e.key === 'Escape') closeRsvp();
   });
 
-  /* ---- WebView scroll fix: passive touch listeners ----
-     In-app browsers (Telegram, Instagram, WhatsApp) block the first
-     touch if any element has a non-passive touchstart listener.
-     Registering passive listeners on document + body tells the browser
-     it can scroll immediately without waiting for JS to finish. ---- */
+  /* WebView first-touch fix */
   document.addEventListener('touchstart', function(){}, { passive: true });
   document.addEventListener('touchmove',  function(){}, { passive: true });
   document.body.addEventListener('touchstart', function(){}, { passive: true });
   document.body.addEventListener('touchmove',  function(){}, { passive: true });
-
-  /* Force a layout tick on first touch to wake up WebView scroll engine */
-  var _scrollUnlocked = false;
+  var _su = false;
   document.addEventListener('touchstart', function() {
-    if (_scrollUnlocked) return;
-    _scrollUnlocked = true;
-    var s = document.body.style;
-    s.webkitOverflowScrolling = 'touch';
-    /* nudge scroll position by 0px to kick WebView into scroll mode */
-    window.scrollTo(window.scrollX, window.scrollY + 0);
-  }, { passive: true, once: false });
+    if (_su) return; _su = true;
+    document.body.style.webkitOverflowScrolling = 'touch';
+    window.scrollTo(window.scrollX, window.scrollY);
+  }, { passive: true });
 </script>
 
 </body>
