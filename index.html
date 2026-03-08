@@ -489,6 +489,22 @@
     font-size: 19px; font-weight: 500; margin-bottom: 6px; color: var(--ink);
   }
   .transport-box p { font-size: 15px; color: var(--ink-light); line-height: 1.7; }
+  .car-rental-links {
+    margin-top: 12px; padding-top: 12px;
+    border-top: 1px solid var(--cream-dark);
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .car-rental-label {
+    font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 4px;
+  }
+  .car-rental-item {
+    font-size: 14px; color: var(--gold); text-decoration: none;
+    display: flex; align-items: center; gap: 4px;
+    padding: 8px 12px; border-radius: 8px;
+    background: var(--cream); border: 1px solid var(--cream-dark);
+    transition: background 0.2s;
+  }
+  .car-rental-item:hover { background: var(--cream-dark); }
   .contact-info {
     margin-top: 20px; padding: 18px 20px;
     background: var(--cream); border-radius: 10px; text-align: center;
@@ -1562,6 +1578,15 @@
       <div class="transport-box">
         <h4 data-i18n="travel.fly.ipoh.transport.title">From Ipoh to Kampung Chui Chak</h4>
         <p data-i18n="travel.fly.ipoh.transport.desc">It is roughly a 1.5-hour drive from Ipoh Airport to the kampung. You are welcome to rent a car, or join a shared van that we will coordinate with other guests closer to the date.</p>
+        <div class="car-rental-links">
+          <div class="car-rental-label" data-i18n="travel.carrental.label">🚗 Car Rental Options at Ipoh Airport</div>
+          <a href="https://share.google/mTjrtawTCNlyjBLmI" target="_blank" rel="noopener" class="car-rental-item">
+            <span data-i18n="travel.carrental.nearest">Agtran Car Rental Ipoh — Nearest to Airport</span> ↗
+          </a>
+          <a href="https://share.google/bm74UVBC0MgEMlZyW" target="_blank" rel="noopener" class="car-rental-item">
+            <span data-i18n="travel.carrental.best">Car Rental Ipoh Jaya (Airport Ipoh) — Highest Rated</span> ↗
+          </a>
+        </div>
       </div>
     </div>
 
@@ -1885,6 +1910,9 @@
       'travel.fly.ipoh.return.value': '约下午 2:30 从 IPH 出发（时间因日期而异）',
       'travel.fly.ipoh.transport.title': '从怡保到水闸新村',
       'travel.fly.ipoh.transport.desc': '从怡保机场到新村约1.5小时车程。您可以租车自驾，也可以加入我们稍后为宾客协调的拼车接送服务。',
+      'travel.carrental.label': '🚗 怡保机场租车推荐',
+      'travel.carrental.nearest': 'Agtran Car Rental Ipoh — 距机场最近',
+      'travel.carrental.best': 'Car Rental Ipoh Jaya (Airport Ipoh) — 评分最高',
       'travel.alternative': '备选',
       'travel.fly.kl.title': '飞往吉隆坡 (KUL)',
       'travel.fly.kl.desc': '飞抵吉隆坡后租车北上，车程约2小时。如果您想顺便游览吉隆坡或沿途欣赏风景，这是个不错的选择。',
