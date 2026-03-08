@@ -979,16 +979,77 @@
   .telegram body {
     padding-top: 0 !important;
   }
+  /* ===========================================
+     LANGUAGE SWITCHER
+  =========================================== */
+  .lang-switch {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-left: 4px;
+    border: 1px solid var(--cream-dark);
+    border-radius: 20px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .lang-switch button {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 5px 11px;
+    border: none;
+    background: transparent;
+    color: var(--ink-light);
+    cursor: pointer;
+    font-weight: 400;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.2s, color 0.2s;
+  }
+  .lang-switch button.active {
+    background: var(--gold);
+    color: var(--white);
+    font-weight: 500;
+  }
+  .lang-switch button:not(.active):hover {
+    background: var(--cream-dark);
+  }
+  /* Chinese text styling — use Noto Serif SC for body text when in zh mode */
+  html[lang="zh"] .welcome-text,
+  html[lang="zh"] .section-body,
+  html[lang="zh"] .event-note,
+  html[lang="zh"] .timeline-note,
+  html[lang="zh"] .travel-option > p,
+  html[lang="zh"] .transport-box p,
+  html[lang="zh"] .contact-info p,
+  html[lang="zh"] .explore-card-body p,
+  html[lang="zh"] .closing-subtitle {
+    font-family: 'Noto Serif SC', 'Cormorant Garamond', serif;
+  }
+  html[lang="zh"] .hero-ornament,
+  html[lang="zh"] .section-label,
+  html[lang="zh"] .accom-card-label,
+  html[lang="zh"] .travel-option-badge,
+  html[lang="zh"] .explore-card-badge,
+  html[lang="zh"] .countdown-label,
+  html[lang="zh"] .map-card-cta {
+    font-family: 'Noto Serif SC', 'DM Sans', sans-serif;
+    letter-spacing: 0.08em;
+  }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <a href="#itinerary">Itinerary</a>
-  <a href="#accommodation">Stay</a>
-  <a href="#travel">Getting There</a>
-  <a href="#explore">Explore</a>
+  <a href="#itinerary" data-i18n="nav.itinerary">Itinerary</a>
+  <a href="#accommodation" data-i18n="nav.stay">Stay</a>
+  <a href="#travel" data-i18n="nav.travel">Getting There</a>
+  <a href="#explore" data-i18n="nav.explore">Explore</a>
+  <div class="lang-switch">
+    <button id="lang-en" class="active" onclick="setLang('en')">EN</button>
+    <button id="lang-zh" onclick="setLang('zh')">中文</button>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -998,54 +1059,54 @@
       <div class="hero-photo-inner">
         <img src="https://framerusercontent.com/images/WHWnTHi4Dj5YnPBGfkYGSdUpzo.jpeg" alt="Lance and Xiao Hui" fetchpriority="high" decoding="async" />
         <div class="hero-photo-badge">
-          <div class="hero-photo-badge-label">Wedding Invitation</div>
-          <div class="hero-photo-badge-title">You're Invited</div>
+          <div class="hero-photo-badge-label" data-i18n="hero.badge.label">Wedding Invitation</div>
+          <div class="hero-photo-badge-title" data-i18n="hero.badge.title">You're Invited</div>
         </div>
       </div>
     </div>
   </div>
   <div class="hero-right">
-  <div class="hero-ornament">Together with our families, we joyfully invite you to celebrate our wedding</div>
+  <div class="hero-ornament" data-i18n="hero.ornament">Together with our families, we joyfully invite you to celebrate our wedding</div>
   <div class="hero-names">
     <h1>Lance</h1>
     <span class="hero-ampersand">&amp;</span>
     <h1>Xiao Hui</h1>
   </div>
   <div class="hero-info">
-    <div class="hero-date">12 ~ 14 September 2026</div>
-    <div class="hero-location">Kampung Chui Chak, Langkap, Perak, Malaysia</div>
+    <div class="hero-date" data-i18n="hero.date">12 ~ 14 September 2026</div>
+    <div class="hero-location" data-i18n="hero.location">Kampung Chui Chak, Langkap, Perak, Malaysia</div>
   </div>
 
   <!-- COUNTDOWN -->
   <div class="hero-countdown">
     <div class="countdown-unit">
       <span class="countdown-num" id="cd-days">--</span>
-      <span class="countdown-label">Days</span>
+      <span class="countdown-label" data-i18n="countdown.days">Days</span>
     </div>
     <div class="countdown-sep">·</div>
     <div class="countdown-unit">
       <span class="countdown-num" id="cd-hours">--</span>
-      <span class="countdown-label">Hours</span>
+      <span class="countdown-label" data-i18n="countdown.hours">Hours</span>
     </div>
     <div class="countdown-sep">·</div>
     <div class="countdown-unit">
       <span class="countdown-num" id="cd-mins">--</span>
-      <span class="countdown-label">Mins</span>
+      <span class="countdown-label" data-i18n="countdown.mins">Mins</span>
     </div>
     <div class="countdown-sep">·</div>
     <div class="countdown-unit">
       <span class="countdown-num" id="cd-secs">--</span>
-      <span class="countdown-label">Secs</span>
+      <span class="countdown-label" data-i18n="countdown.secs">Secs</span>
     </div>
   </div>
 
   <!-- RSVP in hero -->
   <div class="hero-rsvp">
-    <button class="rsvp-btn" onclick="openRsvp()">RSVP Now</button>
+    <button class="rsvp-btn" onclick="openRsvp()" data-i18n="hero.rsvp">RSVP Now</button>
   </div>
 
   <button class="hero-scroll" onclick="scrollToContent()" aria-label="Scroll down">
-    <span>Scroll</span>
+    <span data-i18n="hero.scroll">Scroll</span>
     <div class="scroll-arrow">
       <svg width="22" height="12" viewBox="0 0 22 12" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M1 1L11 10L21 1" stroke="#b8956a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1070,7 +1131,7 @@
       <div class="divider-line"></div>
     </div>
     <div class="welcome-text">
-      <p>It would mean the world to have you with us as we begin this new chapter. Join us in the heart of rural Perak, surrounded by lush paddy fields, warm hospitality, and all the people we hold dear.</p>
+      <p data-i18n="welcome.text">It would mean the world to have you with us as we begin this new chapter. Join us in the heart of rural Perak, surrounded by lush paddy fields, warm hospitality, and all the people we hold dear.</p>
     </div>
   </div>
 </section>
@@ -1079,20 +1140,20 @@
 <section class="itinerary-section" id="itinerary">
   <div class="section-inner">
     <div class="reveal">
-      <div class="section-label">The Celebrations</div>
-      <div class="section-title">Event Itinerary</div>
+      <div class="section-label" data-i18n="itinerary.label">The Celebrations</div>
+      <div class="section-title" data-i18n="itinerary.title">Event Itinerary</div>
     </div>
 
     <div class="timeline">
       <div class="timeline-day reveal">
-        <div class="timeline-day-label">Saturday, 12 September</div>
+        <div class="timeline-day-label" data-i18n="itinerary.day1.label">Saturday, 12 September</div>
 
         <div class="timeline-event">
           <div class="event-time">8:00 &ndash; 9:00 AM</div>
           <div class="event-content">
-            <div class="event-name">Betrothal Ceremony</div>
-            <div class="event-name-cn">过大礼 Gu&ograve; D&agrave; Lǐ</div>
-            <div class="event-note">A time-honoured exchange of gifts between both families, and one of the most cherished rituals in Chinese wedding tradition.</div>
+            <div class="event-name" data-i18n="itinerary.day1.e1.name">Betrothal Ceremony</div>
+            <div class="event-name-cn" data-i18n="itinerary.day1.e1.cn">过大礼 Guò Dà Lǐ</div>
+            <div class="event-note" data-i18n="itinerary.day1.e1.note">A time-honoured exchange of gifts between both families, and one of the most cherished rituals in Chinese wedding tradition.</div>
             <a href="https://maps.app.goo.gl/2CxhyZ3tJNACBZtu7?g_st=ic" target="_blank" rel="noopener" class="map-card-link">
               <div class="map-card">
                 <div class="map-card-visual">
@@ -1113,10 +1174,10 @@
                 </div>
                 <div class="map-card-info">
                   <div>
-                    <div class="map-card-name">Bride's Childhood Home</div>
+                    <div class="map-card-name" data-i18n="map.bride.childhood">Bride's Childhood Home</div>
                     <div class="map-card-sub">Kampung Chui Chak, Perak</div>
                   </div>
-                  <div class="map-card-cta">Open Maps</div>
+                  <div class="map-card-cta" data-i18n="map.cta">Open Maps</div>
                 </div>
               </div>
             </a>
@@ -1126,9 +1187,9 @@
         <div class="timeline-event">
           <div class="event-time">6:00 PM &ndash; Late</div>
           <div class="event-content">
-            <div class="event-name">Buffet Dinner</div>
-            <div class="event-name-cn">自助餐</div>
-            <div class="event-note">An evening of great food and even better company. Come with an appetite and stay for as long as you like.</div>
+            <div class="event-name" data-i18n="itinerary.day1.e2.name">Buffet Dinner</div>
+            <div class="event-name-cn" data-i18n="itinerary.day1.e2.cn">自助餐</div>
+            <div class="event-note" data-i18n="itinerary.day1.e2.note">An evening of great food and even better company. Come with an appetite and stay for as long as you like.</div>
             <a href="https://maps.app.goo.gl/LSVAPruTJ6Mq9Wgg6?g_st=ic" target="_blank" rel="noopener" class="map-card-link">
               <div class="map-card">
                 <div class="map-card-visual">
@@ -1149,10 +1210,10 @@
                 </div>
                 <div class="map-card-info">
                   <div>
-                    <div class="map-card-name">Bride's Home</div>
+                    <div class="map-card-name" data-i18n="map.bride.home">Bride's Home</div>
                     <div class="map-card-sub">No 29, Jalan Taman Chui Chak</div>
                   </div>
-                  <div class="map-card-cta">Open Maps</div>
+                  <div class="map-card-cta" data-i18n="map.cta">Open Maps</div>
                 </div>
               </div>
             </a>
@@ -1161,14 +1222,14 @@
       </div>
 
       <div class="timeline-day reveal">
-        <div class="timeline-day-label">Sunday, 13 September</div>
+        <div class="timeline-day-label" data-i18n="itinerary.day2.label">Sunday, 13 September</div>
 
         <div class="timeline-event">
           <div class="event-time">9:00 &ndash; 11:00 AM</div>
           <div class="event-content">
-            <div class="event-name">Tea Ceremony</div>
-            <div class="event-name-cn">敬茶 J&igrave;ng Ch&aacute;</div>
-            <div class="event-note">A meaningful tradition in which the couple serves tea to their elders, offering gratitude and respect to both families.</div>
+            <div class="event-name" data-i18n="itinerary.day2.e1.name">Tea Ceremony</div>
+            <div class="event-name-cn" data-i18n="itinerary.day2.e1.cn">敬茶 Jìng Chá</div>
+            <div class="event-note" data-i18n="itinerary.day2.e1.note">A meaningful tradition in which the couple serves tea to their elders, offering gratitude and respect to both families.</div>
             <a href="https://maps.app.goo.gl/2CxhyZ3tJNACBZtu7?g_st=ic" target="_blank" rel="noopener" class="map-card-link">
               <div class="map-card">
                 <div class="map-card-visual">
@@ -1189,10 +1250,10 @@
                 </div>
                 <div class="map-card-info">
                   <div>
-                    <div class="map-card-name">Bride's Childhood Home</div>
+                    <div class="map-card-name" data-i18n="map.bride.childhood">Bride's Childhood Home</div>
                     <div class="map-card-sub">Kampung Chui Chak, Perak</div>
                   </div>
-                  <div class="map-card-cta">Open Maps</div>
+                  <div class="map-card-cta" data-i18n="map.cta">Open Maps</div>
                 </div>
               </div>
             </a>
@@ -1202,9 +1263,9 @@
         <div class="timeline-event">
           <div class="event-time">6:00 &ndash; 9:00 PM</div>
           <div class="event-content">
-            <div class="event-name">Wedding Banquet</div>
-            <div class="event-name-cn">晚宴 Wǎn Y&agrave;n</div>
-            <div class="event-note">The heart of our celebration. A traditional Chinese banquet dinner shared with family and friends.</div>
+            <div class="event-name" data-i18n="itinerary.day2.e2.name">Wedding Banquet</div>
+            <div class="event-name-cn" data-i18n="itinerary.day2.e2.cn">晚宴 Wǎn Yàn</div>
+            <div class="event-note" data-i18n="itinerary.day2.e2.note">The heart of our celebration. A traditional Chinese banquet dinner shared with family and friends.</div>
             <a href="https://maps.app.goo.gl/z882SJvLvjna4kgJA?g_st=ic" target="_blank" rel="noopener" class="map-card-link">
               <div class="map-card">
                 <div class="map-card-visual">
@@ -1225,10 +1286,10 @@
                 </div>
                 <div class="map-card-info">
                   <div>
-                    <div class="map-card-name">Shin Lock Restaurant</div>
+                    <div class="map-card-name" data-i18n="map.shinlock">Shin Lock Restaurant</div>
                     <div class="map-card-sub">Langkap, Perak</div>
                   </div>
-                  <div class="map-card-cta">Open Maps</div>
+                  <div class="map-card-cta" data-i18n="map.cta">Open Maps</div>
                 </div>
               </div>
             </a>
@@ -1237,7 +1298,7 @@
       </div>
     </div>
 
-    <div class="timeline-note reveal">
+    <div class="timeline-note reveal" data-i18n="itinerary.note">
       Timings are a guide and may shift slightly depending on weather or logistics. The time between events is yours to enjoy freely. Take a walk through the kampung, rest up, or simply soak in the countryside.
     </div>
   </div>
@@ -1247,29 +1308,29 @@
 <section id="accommodation">
   <div class="section-inner">
     <div class="reveal">
-      <div class="section-label">Where You&rsquo;ll Stay</div>
-      <div class="section-title">Accommodation</div>
+      <div class="section-label" data-i18n="accom.label">Where You'll Stay</div>
+      <div class="section-title" data-i18n="accom.title">Accommodation</div>
       <div class="section-body">
-        <p>We have arranged homestay accommodation right within Kampung Chui Chak, so you will be close to all the festivities. No booking is needed on your end. We will confirm the exact details once headcount is finalised. This applies to guests coming from overseas as well.</p>
+        <p data-i18n="accom.body">We have arranged homestay accommodation right within Kampung Chui Chak, so you will be close to all the festivities. No booking is needed on your end. We will confirm the exact details once headcount is finalised. This applies to guests coming from overseas as well.</p>
       </div>
     </div>
 
     <div class="accom-details reveal">
       <div class="accom-card">
-        <div class="accom-card-label">Duration</div>
-        <div class="accom-card-value">3 Days / 2 Nights</div>
+        <div class="accom-card-label" data-i18n="accom.duration.label">Duration</div>
+        <div class="accom-card-value" data-i18n="accom.duration.value">3 Days / 2 Nights</div>
       </div>
       <div class="accom-card">
-        <div class="accom-card-label">Dates</div>
-        <div class="accom-card-value">Sat 12 &ndash; Mon 14 Sep</div>
+        <div class="accom-card-label" data-i18n="accom.dates.label">Dates</div>
+        <div class="accom-card-value" data-i18n="accom.dates.value">Sat 12 &ndash; Mon 14 Sep</div>
       </div>
       <div class="accom-card">
-        <div class="accom-card-label">Check-in</div>
-        <div class="accom-card-value">From 12:00 PM</div>
+        <div class="accom-card-label" data-i18n="accom.checkin.label">Check-in</div>
+        <div class="accom-card-value" data-i18n="accom.checkin.value">From 12:00 PM</div>
       </div>
       <div class="accom-card">
-        <div class="accom-card-label">Check-out</div>
-        <div class="accom-card-value">Flexible (Mon)</div>
+        <div class="accom-card-label" data-i18n="accom.checkout.label">Check-out</div>
+        <div class="accom-card-value" data-i18n="accom.checkout.value">Flexible (Mon)</div>
       </div>
     </div>
   </div>
@@ -1279,40 +1340,40 @@
 <section class="travel-section" id="travel">
   <div class="section-inner">
     <div class="reveal">
-      <div class="section-label">Getting There</div>
-      <div class="section-title">From Singapore to Kampung Chui Chak</div>
+      <div class="section-label" data-i18n="travel.label">Getting There</div>
+      <div class="section-title" data-i18n="travel.title">From Singapore to Kampung Chui Chak</div>
     </div>
 
     <div class="travel-option reveal">
-      <div class="travel-option-badge">Recommended</div>
-      <h3>Fly Direct to Ipoh (IPH)</h3>
-      <p>The simplest way to get here. Scoot operates daily direct flights from Singapore Changi to Ipoh, with a flight time of around 1 hour 15 minutes.</p>
+      <div class="travel-option-badge" data-i18n="travel.recommended">Recommended</div>
+      <h3 data-i18n="travel.fly.ipoh.title">Fly Direct to Ipoh (IPH)</h3>
+      <p data-i18n="travel.fly.ipoh.desc">The simplest way to get here. Scoot operates daily direct flights from Singapore Changi to Ipoh, with a flight time of around 1 hour 15 minutes.</p>
       <div class="travel-details">
-        <div class="travel-detail"><span class="td-label">✈️ Route:</span> <span>SIN &rarr; IPH via Scoot</span></div>
-        <div class="travel-detail"><span class="td-label">💰 Fare:</span> <span>From ~SGD 300 return (subject to availability)</span></div>
-        <div class="travel-detail"><span class="td-label">🕐 Out:</span> <span>~12:30 PM from SIN (approx. 1h 15m flight)</span></div>
-        <div class="travel-detail"><span class="td-label">🔄 Return:</span> <span>~2:30 PM from IPH (timings vary by date)</span></div>
+        <div class="travel-detail"><span class="td-label" data-i18n="travel.fly.ipoh.route.label">✈️ Route:</span> <span data-i18n="travel.fly.ipoh.route.value">SIN → IPH via Scoot</span></div>
+        <div class="travel-detail"><span class="td-label" data-i18n="travel.fly.ipoh.fare.label">💰 Fare:</span> <span data-i18n="travel.fly.ipoh.fare.value">From ~SGD 300 return (subject to availability)</span></div>
+        <div class="travel-detail"><span class="td-label" data-i18n="travel.fly.ipoh.out.label">🕐 Out:</span> <span data-i18n="travel.fly.ipoh.out.value">~12:30 PM from SIN (approx. 1h 15m flight)</span></div>
+        <div class="travel-detail"><span class="td-label" data-i18n="travel.fly.ipoh.return.label">🔄 Return:</span> <span data-i18n="travel.fly.ipoh.return.value">~2:30 PM from IPH (timings vary by date)</span></div>
       </div>
 
       <div class="transport-box">
-        <h4>From Ipoh to Kampung Chui Chak</h4>
-        <p>It is roughly a 1.5-hour drive from Ipoh Airport to the kampung. You are welcome to rent a car, or join a shared van that we will coordinate with other guests closer to the date.</p>
+        <h4 data-i18n="travel.fly.ipoh.transport.title">From Ipoh to Kampung Chui Chak</h4>
+        <p data-i18n="travel.fly.ipoh.transport.desc">It is roughly a 1.5-hour drive from Ipoh Airport to the kampung. You are welcome to rent a car, or join a shared van that we will coordinate with other guests closer to the date.</p>
       </div>
     </div>
 
     <div class="travel-option reveal">
-      <div class="travel-option-badge alt">Alternative</div>
-      <h3>Fly to Kuala Lumpur (KUL)</h3>
-      <p>Fly into Kuala Lumpur, rent a car, and enjoy the drive north. It is about 2 hours from KL and a wonderful option if you would like to explore the city or take in the scenery along the way.</p>
+      <div class="travel-option-badge alt" data-i18n="travel.alternative">Alternative</div>
+      <h3 data-i18n="travel.fly.kl.title">Fly to Kuala Lumpur (KUL)</h3>
+      <p data-i18n="travel.fly.kl.desc">Fly into Kuala Lumpur, rent a car, and enjoy the drive north. It is about 2 hours from KL and a wonderful option if you would like to explore the city or take in the scenery along the way.</p>
     </div>
 
     <div class="contact-info reveal">
-      <p>If you need any help with booking or travel arrangements, please reach out to:</p>
-      <p style="margin-top: 6px;">
-        <strong>Groom&rsquo;s side:</strong> Sallie Wong<br><a href="tel:+6596601694">+65 9660 1694</a>
+      <p data-i18n="travel.contact.intro">If you need any help with booking or travel arrangements, please reach out to:</p>
+      <p style="margin-top: 6px;" data-i18n-html="travel.contact.groom">
+        <strong>Groom's side:</strong> Sallie Wong<br><a href="tel:+6596601694">+65 9660 1694</a>
       </p>
-      <p style="margin-top: 4px;">
-        <strong>Bride&rsquo;s side:</strong> Xiao Hui<br><a href="tel:+6583155626">+65 8315 5626</a>
+      <p style="margin-top: 4px;" data-i18n-html="travel.contact.bride">
+        <strong>Bride's side:</strong> Xiao Hui<br><a href="tel:+6583155626">+65 8315 5626</a>
       </p>
     </div>
   </div>
@@ -1322,10 +1383,10 @@
 <section id="explore">
   <div class="section-inner">
     <div class="reveal">
-      <div class="section-label">While You&rsquo;re Here</div>
-      <div class="section-title">Explore the Neighbourhood</div>
+      <div class="section-label" data-i18n="explore.label">While You're Here</div>
+      <div class="section-title" data-i18n="explore.title">Explore the Neighbourhood</div>
       <div class="section-body">
-        <p>There is plenty to take in between celebrations. The pace here is gentle, the scenery is lovely, and the local food is absolutely worth trying.</p>
+        <p data-i18n="explore.body">There is plenty to take in between celebrations. The pace here is gentle, the scenery is lovely, and the local food is absolutely worth trying.</p>
       </div>
     </div>
 
@@ -1334,11 +1395,11 @@
         <div class="explore-card">
           <div class="explore-thumb">
             <img class="explore-card-img" src="https://i.ibb.co/qFWTQ5pn/download-5.jpg" alt="Leaning Tower of Teluk Intan" />
-            <div class="explore-card-badge">View on Maps ↗</div>
+            <div class="explore-card-badge" data-i18n="explore.badge">View on Maps ↗</div>
           </div>
           <div class="explore-card-body">
-            <h3>Teluk Intan</h3>
-            <p>Pay a visit to the iconic Leaning Tower and wander the charming heritage streets of this riverside town, just a short drive from the kampung.</p>
+            <h3 data-i18n="explore.teluk.title">Teluk Intan</h3>
+            <p data-i18n="explore.teluk.desc">Pay a visit to the iconic Leaning Tower and wander the charming heritage streets of this riverside town, just a short drive from the kampung.</p>
           </div>
         </div>
       </a>
@@ -1347,11 +1408,11 @@
         <div class="explore-card">
           <div class="explore-thumb">
             <img class="explore-card-img" src="https://i.ibb.co/rGBg57gk/download-6.jpg" alt="Chui Chak paddy fields" />
-            <div class="explore-card-badge">View on Maps ↗</div>
+            <div class="explore-card-badge" data-i18n="explore.badge">View on Maps ↗</div>
           </div>
           <div class="explore-card-body">
-            <h3>Chui Chak Paddy Fields</h3>
-            <p>Take a walk through the paddy fields of 水闸 at golden hour. The views are truly stunning, so do bring your camera.</p>
+            <h3 data-i18n="explore.paddy.title">Chui Chak Paddy Fields</h3>
+            <p data-i18n="explore.paddy.desc">Take a walk through the paddy fields of 水闸 at golden hour. The views are truly stunning, so do bring your camera.</p>
           </div>
         </div>
       </a>
@@ -1360,11 +1421,11 @@
         <div class="explore-card">
           <div class="explore-thumb">
             <img class="explore-card-img" src="https://i.ibb.co/LXHyHR80/download-7.jpg" alt="Ipoh limestone cave temple" />
-            <div class="explore-card-badge">View on Maps ↗</div>
+            <div class="explore-card-badge" data-i18n="explore.badge">View on Maps ↗</div>
           </div>
           <div class="explore-card-body">
-            <h3>Ipoh &amp; Cave Temples</h3>
-            <p>Spend some time in Ipoh and explore the limestone cave temples, old-town street art, and some of the best street food in Malaysia.</p>
+            <h3 data-i18n="explore.ipoh.title">Ipoh &amp; Cave Temples</h3>
+            <p data-i18n="explore.ipoh.desc">Spend some time in Ipoh and explore the limestone cave temples, old-town street art, and some of the best street food in Malaysia.</p>
           </div>
         </div>
       </a>
@@ -1378,10 +1439,10 @@
     <img src="https://framerusercontent.com/images/RDABEdI89aC07wjMrS5zB185w.jpeg" alt="Lance and Xiao Hui at sunset" />
     <div class="closing-photo-overlay"></div>
     <div class="closing-content reveal">
-      <div class="section-label">See You There</div>
-      <div class="section-title">We look forward to celebrating<br>with you</div>
-      <div class="closing-subtitle">From our families to yours, thank you for being part of this moment.</div>
-      <div class="closing-date">12 ~ 14 September 2026 &middot; Kampung Chui Chak, Perak</div>
+      <div class="section-label" data-i18n="closing.label">See You There</div>
+      <div class="section-title" data-i18n-html="closing.title">We look forward to celebrating<br>with you</div>
+      <div class="closing-subtitle" data-i18n="closing.subtitle">From our families to yours, thank you for being part of this moment.</div>
+      <div class="closing-date" data-i18n="closing.date">12 ~ 14 September 2026 · Kampung Chui Chak, Perak</div>
     </div>
   </div>
 </section>
@@ -1403,7 +1464,7 @@
 <div class="rsvp-modal-backdrop" id="rsvp-backdrop" onclick="handleBackdropClick(event)">
   <div class="rsvp-modal">
     <div class="rsvp-modal-header">
-      <div class="rsvp-modal-title">RSVP — Lance &amp; Xiao Hui</div>
+      <div class="rsvp-modal-title" data-i18n="rsvp.modal.title">RSVP — Lance &amp; Xiao Hui</div>
       <button class="rsvp-modal-close" onclick="closeRsvp()" aria-label="Close">&#x2715;</button>
     </div>
     <iframe
@@ -1550,6 +1611,119 @@
         heroPhoto.style.contain = 'layout style paint';
       }, { once: true });
     }
+  }
+
+  /* ---- Language Switcher ---- */
+  var i18n = {
+    zh: {
+      'nav.itinerary': '婚礼流程',
+      'nav.stay': '住宿',
+      'nav.travel': '交通指南',
+      'nav.explore': '周边游',
+      'hero.badge.label': '婚礼邀请函',
+      'hero.badge.title': '诚邀您的到来',
+      'hero.ornament': '我们携双方家人，诚挚邀请您一同见证我们的婚礼',
+      'hero.date': '2026年9月12日 ~ 14日',
+      'hero.location': '马来西亚 霹雳州 朗卡 水闸新村',
+      'countdown.days': '天',
+      'countdown.hours': '时',
+      'countdown.mins': '分',
+      'countdown.secs': '秒',
+      'hero.rsvp': '回复出席',
+      'hero.scroll': '往下滑',
+      'welcome.text': '您的到来对我们意义非凡。诚邀您来到霹雳州的乡间，在翠绿稻田与亲友的温暖围绕下，一起见证我们人生新篇章的开始。',
+      'itinerary.label': '婚礼庆典',
+      'itinerary.title': '活动流程',
+      'itinerary.day1.label': '星期六，9月12日',
+      'itinerary.day1.e1.name': '过大礼',
+      'itinerary.day1.e1.cn': '过大礼',
+      'itinerary.day1.e1.note': '两家人之间的传统礼品交换仪式，是华人婚礼中最为隆重的传统之一。',
+      'itinerary.day1.e2.name': '自助晚餐',
+      'itinerary.day1.e2.cn': '自助餐',
+      'itinerary.day1.e2.note': '一个美食与欢乐的夜晚。带上好胃口，尽情享用，想待多久就待多久。',
+      'itinerary.day2.label': '星期日，9月13日',
+      'itinerary.day2.e1.name': '敬茶仪式',
+      'itinerary.day2.e1.cn': '敬茶',
+      'itinerary.day2.e1.note': '新人向长辈敬茶的传统仪式，表达对双方家庭的感恩与敬意。',
+      'itinerary.day2.e2.name': '婚宴',
+      'itinerary.day2.e2.cn': '晚宴',
+      'itinerary.day2.e2.note': '我们婚礼最重要的一环——与家人好友共享传统中式喜宴。',
+      'itinerary.note': '以上时间仅供参考，可能因天气或实际情况略有调整。活动之间的空闲时间由您自由安排——可以到村里散步、休息片刻，或尽情享受乡间的宁静。',
+      'map.bride.childhood': '新娘娘家',
+      'map.bride.home': '新娘家',
+      'map.shinlock': '新乐酒家',
+      'map.cta': '打开地图',
+      'accom.label': '住宿安排',
+      'accom.title': '住宿',
+      'accom.body': '我们已在水闸新村内安排了民宿住宿，方便您就近参与所有庆典活动。您无需自行预订，确切的住宿细节将在人数确认后通知。此安排同样适用于海外宾客。',
+      'accom.duration.label': '住宿时长',
+      'accom.duration.value': '3天 / 2晚',
+      'accom.dates.label': '日期',
+      'accom.dates.value': '周六 9月12日 ~ 周一 14日',
+      'accom.checkin.label': '入住',
+      'accom.checkin.value': '中午 12:00 起',
+      'accom.checkout.label': '退房',
+      'accom.checkout.value': '灵活安排（周一）',
+      'travel.label': '交通指南',
+      'travel.title': '从新加坡到水闸新村',
+      'travel.recommended': '推荐',
+      'travel.fly.ipoh.title': '直飞怡保 (IPH)',
+      'travel.fly.ipoh.desc': '最便捷的方式。酷航每天运营从新加坡樟宜机场直飞怡保的航班，飞行时间约1小时15分钟。',
+      'travel.fly.ipoh.route.label': '✈️ 航线：',
+      'travel.fly.ipoh.route.value': 'SIN → IPH 酷航直飞',
+      'travel.fly.ipoh.fare.label': '💰 票价：',
+      'travel.fly.ipoh.fare.value': '往返约 SGD 300 起（视供应情况）',
+      'travel.fly.ipoh.out.label': '🕐 去程：',
+      'travel.fly.ipoh.out.value': '约下午 12:30 从 SIN 出发（飞行约1小时15分）',
+      'travel.fly.ipoh.return.label': '🔄 回程：',
+      'travel.fly.ipoh.return.value': '约下午 2:30 从 IPH 出发（时间因日期而异）',
+      'travel.fly.ipoh.transport.title': '从怡保到水闸新村',
+      'travel.fly.ipoh.transport.desc': '从怡保机场到新村约1.5小时车程。您可以租车自驾，也可以加入我们稍后为宾客协调的拼车接送服务。',
+      'travel.alternative': '备选',
+      'travel.fly.kl.title': '飞往吉隆坡 (KUL)',
+      'travel.fly.kl.desc': '飞抵吉隆坡后租车北上，车程约2小时。如果您想顺便游览吉隆坡或沿途欣赏风景，这是个不错的选择。',
+      'travel.contact.intro': '如需预订或交通安排方面的帮助，请联系：',
+      'travel.contact.groom': '<strong>男方联系人：</strong> Sallie Wong<br><a href="tel:+6596601694">+65 9660 1694</a>',
+      'travel.contact.bride': '<strong>女方联系人：</strong> 小惠<br><a href="tel:+6583155626">+65 8315 5626</a>',
+      'explore.label': '周边游玩',
+      'explore.title': '探索周边',
+      'explore.body': '庆典之余，这里有不少值得探索的去处。节奏悠闲、风景秀丽，当地美食也绝对值得一试。',
+      'explore.badge': '查看地图 ↗',
+      'explore.teluk.title': '安顺 (Teluk Intan)',
+      'explore.teluk.desc': '参观标志性的安顺斜塔，漫步于这座河畔小镇的古朴街道，距新村仅短程车程。',
+      'explore.paddy.title': '水闸稻田',
+      'explore.paddy.desc': '在金色时分漫步水闸稻田间，景色令人陶醉，记得带上相机。',
+      'explore.ipoh.title': '怡保与洞穴寺庙',
+      'explore.ipoh.desc': '在怡保度过悠闲时光，探索石灰岩洞穴寺庙、旧街场壁画，以及马来西亚最地道的街头美食。',
+      'closing.label': '期待与您相见',
+      'closing.title': '我们期待与您<br>共同庆祝',
+      'closing.subtitle': '感谢您成为这个重要时刻的一份子。',
+      'closing.date': '2026年9月12日 ~ 14日 · 霹雳州 水闸新村',
+      'rsvp.modal.title': '回复出席 — Lance & Xiao Hui'
+    }
+  };
+
+  var currentLang = 'en';
+  var enCache = {};
+
+  function setLang(lang) {
+    if (lang === currentLang) return;
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+    document.getElementById('lang-zh').classList.toggle('active', lang === 'zh');
+
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (!enCache[key]) enCache[key] = el.textContent;
+      el.textContent = lang === 'zh' ? (i18n.zh[key] || enCache[key]) : enCache[key];
+    });
+
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n-html');
+      if (!enCache[key]) enCache[key] = el.innerHTML;
+      el.innerHTML = lang === 'zh' ? (i18n.zh[key] || enCache[key]) : enCache[key];
+    });
   }
 </script>
 
