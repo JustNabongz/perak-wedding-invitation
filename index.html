@@ -90,7 +90,7 @@
   .hero {
     display: flex; flex-direction: column; align-items: center;
     text-align: center;
-    padding: 68px 24px 48px;
+    padding: 32px 24px 48px;
     background: var(--white);
   }
   .hero-left { width: 100%; display: flex; justify-content: center; }
@@ -102,13 +102,32 @@
     box-shadow: 0 20px 60px rgba(44,36,32,0.12), 0 0 0 1px rgba(184,149,106,0.1);
     position: relative;
   }
-  /* padding-bottom trick for 2:3 ratio — avoids aspect-ratio layout recalc on mobile */
-  .hero-photo::after {
-    content: ''; display: block; padding-bottom: 150%;
+  .hero-photo-inner {
+    position: relative;
+    width: 100%;
+    padding-bottom: 150%; /* 2:3 portrait ratio */
   }
-  .hero-photo img {
+  .hero-photo-inner img {
     position: absolute; inset: 0;
     width: 100%; height: 100%; object-fit: cover; object-position: center 15%;
+  }
+  /* "You're Invited" overlay on the photo */
+  .hero-photo-badge {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 32px 20px 20px;
+    background: linear-gradient(to top, rgba(44,36,32,0.72) 0%, transparent 100%);
+    text-align: center;
+    z-index: 2;
+  }
+  .hero-photo-badge-label {
+    font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase;
+    color: rgba(250,246,240,0.7); font-weight: 400; margin-bottom: 4px;
+  }
+  .hero-photo-badge-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 300; font-style: italic;
+    color: var(--cream); line-height: 1.2;
   }
 
   .hero-right {
@@ -184,8 +203,16 @@
       border-radius: 0; margin: 0;
       box-shadow: none; opacity: 1; animation: none;
     }
-    .hero-photo::after { display: none; }
-    .hero-photo img { position: static; }
+    .hero-photo-inner {
+      position: static;
+      padding-bottom: 0;
+      height: 100%;
+    }
+    .hero-photo-inner img {
+      position: static;
+      width: 100%; height: 100%;
+    }
+    .hero-photo-badge { display: none; }
     .hero-photo img { object-position: center top; }
     .hero-right {
       flex: 1; min-height: 100vh;
@@ -910,7 +937,13 @@
 <section class="hero">
   <div class="hero-left">
     <div class="hero-photo">
-      <img src="https://framerusercontent.com/images/WHWnTHi4Dj5YnPBGfkYGSdUpzo.jpeg" alt="Lance and Xiao Hui" />
+      <div class="hero-photo-inner">
+        <img src="https://framerusercontent.com/images/WHWnTHi4Dj5YnPBGfkYGSdUpzo.jpeg" alt="Lance and Xiao Hui" />
+        <div class="hero-photo-badge">
+          <div class="hero-photo-badge-label">Wedding Invitation</div>
+          <div class="hero-photo-badge-title">You're Invited</div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="hero-right">
